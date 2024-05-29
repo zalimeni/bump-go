@@ -117,5 +117,5 @@ runs:
         GITHUB_TOKEN: ${{ inputs.github_token }}
       run: |
         BRANCH_NAME=${{ steps.git-push-changes.outputs.branch-name }}
-        gh pr create --base main --head "$BRANCH_NAME" --title "[auto] Bump go version to ${{ steps.check-lts.outputs.latest-patch-version }}" --body "Bump go version to ${{ steps.get-go-version.outputs.latest-patch-version }}" --reviewer "${INPUT_REVIEWER}"
+        gh pr create --base main --head "$BRANCH_NAME" --title "[auto] Bump go version to ${{ steps.check-lts.outputs.latest-patch-version }}" --body "Bump go version to ${{ steps.check-lts.outputs.latest-patch-version }}" --reviewer "${INPUT_REVIEWER}"
         echo "Created PR to bump go version and stdlibs"
