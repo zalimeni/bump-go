@@ -101,7 +101,7 @@ runs:
 
     - name: 'Create PR to bump go version and stdlibs'
       shell: bash
-      if: steps.check-lts.outputs.lts == 'true' steps.check-lts.outputs.needs-bump == 'true'
+      if: steps.check-lts.outputs.lts == 'true' && steps.check-lts.outputs.needs-bump == 'true'
       env:
         INPUT_REVIEWER: ${{ inputs.pr_reviewer }}
         GITHUB_TOKEN: ${{ inputs.github_token }}
