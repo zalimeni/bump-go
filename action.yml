@@ -107,7 +107,7 @@ runs:
 
         git add .
         git commit -m "Bump go version to ${{ steps.check-lts.outputs.latest-patch-version }}"
-        git push origin "$BRANCH_NAME""
+        git push origin "$BRANCH_NAME"
 
     - name: 'Create PR to bump go version and stdlibs'
       shell: bash
