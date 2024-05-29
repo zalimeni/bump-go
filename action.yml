@@ -75,12 +75,14 @@ runs:
         latest_patch_version=$(echo "$versions" | grep "$GO_MINOR_VERSION"| sed 's/go//' | sort -V | tail -1)
         if [ "$latest_patch_version" != "$GO_VERSION" ]; then
           echo "$GO_VERSION needs to be bumped to $latest_patch_version"
+          needs_bump=true
+          echo "needs-bump=${needs_bump}" >> "${GITHUB_OUTPUT}"
           echo "latest-patch-version=${latest_patch_version}" >> "${GITHUB_OUTPUT}"
         fi
 
     - name: 'Push changes to bump go version and sdlibs'
       shell: bash
-      if: steps.check-lts.outputs.lts == 'true' && steps.get-go-version.outputs.latest-patch-version != ''
+      if: steps.check-lts.outputs.lts == 'true' && steps.check-lts.outputs.needs-bump == 'true'
       run: |
         echo "Starting to Push changes to bump go version and sdlibs"
         git config --local user.email "41898282+github-actions[bot]@users.noreply.github.com"
@@ -99,7 +101,7 @@ runs:
 
     - name: 'Create PR to bump go version and stdlibs'
       shell: bash
-      if: steps.check-lts.outputs.lts == 'true' && steps.get-go-version.outputs.latest-patch-version != ''
+      if: steps.check-lts.outputs.lts == 'true' steps.check-lts.outputs.needs-bump == 'true'
       env:
         INPUT_REVIEWER: ${{ inputs.pr_reviewer }}
         GITHUB_TOKEN: ${{ inputs.github_token }}
