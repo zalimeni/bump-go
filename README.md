@@ -28,3 +28,7 @@ This GitHub Action auto-creates a PR that bumps the Go version to the latest ava
     github_token: ${{ secrets.GITHUB_TOKEN }}
     pr_reviewer: github-username
 ```
+
+## Requirements
+
+Be sure to have the `Allow GitHub Actions to create and approve pull requests` option enabled.

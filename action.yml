@@ -87,17 +87,24 @@ runs:
         echo "Starting to Push changes to bump go version and sdlibs"
         git config --local user.email "41898282+github-actions[bot]@users.noreply.github.com"
         git config --local user.name "github-actions[bot]"  
-        git checkout -b "bump-go-${{ steps.get-go-version.outputs.go-version }}"
+        git checkout -b "bump-go-${{ steps.check-lts.outputs.latest-patch-version }}"
+        BRANCH_NAME="bump-go-${{ steps.check-lts.outputs.latest-patch-version }}"
+        git fetch
+        if git show-ref --quiet refs/remotes/origin/$BRANCH_NAME; then
+          echo "Branch already exists, please review the existing PR."
+          exit 1
+        fi
+        git checkout -b "$BRANCH_NAME"
 
-        echo "${{ steps.get-go-version.outputs.latest-patch-version }}" > .go-version
+        echo "${{ steps.check-lts.outputs.latest-patch-version }}" > .go-version
 
         find . -name go.mod -execdir sh -c 'awk "/golang.org\/x/ {print \$1}" go.mod | grep "golang.org/x" | while read -r line; do go get $line@latest; done' \;
 
         find . -name go.mod -execdir go mod tidy \;
 
         git add .
-        git commit -m "Bump go version to ${{ steps.get-go-version.outputs.latest-patch-version }}"
-        git push origin "bump-go-${{ steps.get-go-version.outputs.go-version }}"
+        git commit -m "Bump go version to ${{ steps.check-lts.outputs.latest-patch-version }}"
+        git push origin "bump-go-${{ steps.check-lts.outputs.latest-patch-version }}"
 
     - name: 'Create PR to bump go version and stdlibs'
       shell: bash
