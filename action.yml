@@ -57,6 +57,7 @@ runs:
         latest_versions=$(echo "$versions" | grep -o 'go[0-9]\+\.[0-9]\+' | sed 's/go//' | sort -uV | tail -2)
         
         lts=false
+        needs_bump=false
         for version in $latest_versions; do
           echo "$versions" | grep "$version"
           if [ "$version" = "$GO_MINOR_VERSION" ]; then
@@ -74,7 +75,7 @@ runs:
         latest_patch_version=$(echo "$versions" | grep "$GO_MINOR_VERSION"| sed 's/go//' | sort -V | tail -1)
         if [ "$latest_patch_version" != "$GO_VERSION" ]; then
           echo "$GO_VERSION needs to be bumped to $latest_patch_version"
-          echo "latest_patch_version=${latest_patch_version}" >> "${GITHUB_OUTPUT}"
+          echo "latest-patch-version=${latest_patch_version}" >> "${GITHUB_OUTPUT}"
         fi
 
     - name: 'Push changes to bump go version and sdlibs'
