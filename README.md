@@ -1,13 +1,13 @@
 # Bump-Go Action
 
-This GitHub Action auto-creates a PR that bumps the Go version to the latest available LTS version and updates the standard libraries in your project.
+This GitHub Action auto-creates a PR that bumps the Go version to the latest available stable version and updates the standard libraries in your project.
 
 ## Features
 
 - Determines the current Go version from a specified file or direct version input.
-- Checks if the current Go version is part of an LTS release.
-- If the current Go version is not part of an LTS release, the action fails.
-- If the current Go version is part of an LTS release but is not the latest patch version, the action bumps the Go version to the latest patch version.
+- Checks if the current Go version is part of a stable (major) release.
+- If the current Go version is not part of a stable release, the action fails.
+- If the current Go version is part of a stable release but is not the latest patch version, the action bumps the Go version to the latest patch version.
 - Updates all Go standard libraries to their latest versions.
 - Commits these changes and pushes them to a new branch.
 - Creates a pull request for these changes.
